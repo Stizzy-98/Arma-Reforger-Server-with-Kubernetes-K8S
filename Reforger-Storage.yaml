@@ -1,0 +1,94 @@
+# ---------- Namespace ----------
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: reforger
+  labels:
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/warn: privileged
+    pod-security.kubernetes.io/audit: privileged
+    pod-security.kubernetes.io/enforce-version: latest
+---
+# ---------- StorageClass (Retain so data survives PVC deletion) ----------
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: longhorn-single
+provisioner: driver.longhorn.io
+allowVolumeExpansion: true
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+parameters:
+  numberOfReplicas: "1"
+  fsType: "xfs"
+---
+# ---------- PersistentVolumeClaims ----------
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: reforger-profile
+  namespace: reforger
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: longhorn-single
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: reforger-workshop
+  namespace: reforger
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: longhorn-single
+  resources:
+    requests:
+      storage: 200Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: reforger-steamcmd
+  namespace: reforger
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: longhorn-single
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: reforger-gamefiles
+  namespace: reforger
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: longhorn-single
+  resources:
+    requests:
+      storage: 100Gi
+---
+# ---------- Server Config ----------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: reforger-config
+  namespace: reforger
+data:
+  server.json: |
+    {
+      "dedicatedServerId": "ar-gm-%profilename",
+      "region": "US",
+      "publicAddress": "YOUR PUBLIC IP",
+      "publicPort": 2001,
+      "a2s": { "address": "YOUR PUBLIC IP", "port": 17777 },
+      "game": {
+        "name": "YOUR SERVER NAME",
+        "scenarioId": "{59AD59368755F41A}Missions/21_GM_Eden.conf",
+        "playerCountLimit": 128,
+        "visible": true
+      }
+    }
