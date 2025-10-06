@@ -32,3 +32,10 @@ Monitor A2S logs:
 
 kubectl -n reforger exec deploy/arma-reforger -c reforger -- sh -lc ' 
 grep -R --line-number -E "Server registered|Direct Join Code|\[A2S\]" /home/profile/logs || true'
+
+Command to run the sniffer to watch for player connections coming to the server:
+
+kubectl -n reforger run sniffer --rm -it \
+  --image=corfr/tcpdump \
+  --overrides='{"spec":{"hostNetwork":true,"dnsPolicy":"ClusterFirstWithHostNet","nodeSelector":{"kubernetes.io/hostname":"YOURHOSTNAME"}}}' \
+  -- tcpdump -n -i any udp port 2001
