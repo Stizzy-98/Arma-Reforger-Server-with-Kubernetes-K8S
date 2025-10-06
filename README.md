@@ -4,6 +4,12 @@ Here is my repo for running a Arma Reforger server within Kubernetes! I made thi
 
 Within my homelab I am running a Talos OS cluster https://www.talos.dev/ running Kubernetes (K8S) and Calico for networking to host multiple applications among them an Arma Reforger server ran fully in Kubernetes. The storage backplane on my server is being run with Longhorn https://longhorn.io/ also hosted with Kubernetes. All files posted are free of use and encouraged to be used to learn Kubernetes yourself and host an Arma Reforger server yourself!
 
+I would keep the namespace set at reforger just for easy reference but you can do whatever of course 
+
+**Break Down**
+
+Reforger-storage.yaml is for setting up the storage plane so that it persists between deleting and redeploying the server. The reforger-server.yaml is for deploying the actual server itself. When you make a copy of the files go in and edit in your configurations for things such as IP and server preference for name and player count. 
+
 **Docker Compose** 
 
 Theoretically this will work in Docker however you will need to go in and change all the volumes to what you want them to be. 
@@ -14,15 +20,15 @@ You will need to port forward port 2001 and 17777 and set up NAT in your router.
 
 **Useful kubectl commands** 
 
-To monitor the server install: 
+Monitor the progression of the server install: 
 
 kubectl -n reforger logs -l app=arma-reforger -c install-arma -f
 
-To monitor the server itself:
+Monitor the server logs:
 
 kubectl -n reforger logs -l app=arma-reforger -c reforger -f
 
-Checks A2S logs: 
+Monitor A2S logs: 
 
 kubectl -n reforger exec deploy/arma-reforger -c reforger -- sh -lc ' 
 grep -R --line-number -E "Server registered|Direct Join Code|\[A2S\]" /home/profile/logs || true'
