@@ -98,13 +98,6 @@ spec:
             - name: a2s
               containerPort: 17777
               protocol: UDP
-          env:
-            - name: SERVER_PUBLIC_ADDRESS
-              value: "YOUR PUBLIC IP"
-            - name: GAME_NAME
-              value: "YOUR SERVER NAME"
-            - name: ARMA_CONFIG
-              value: "server.json"
           securityContext:
             runAsUser: 0
             runAsNonRoot: false
