@@ -18,7 +18,7 @@ Also to login as admin in the server go to the chat and type #login YOURPASSWORD
 
 **Docker Compose** 
 
-Theoretically this will work in Docker however you will need to go in and combine both yamls and change all the volumes and networking to what you need them to be for a dockerized setup. The server that I'm running the server on has 2 CPUs in it with 10 cores each that run at 3.0ghz and I have 256gb of RAM and the server never ran over 15% CPU and 5.5gb of RAM usage on vanilla reforger. While it was running my friends and I were spawning everything and anything to stress test it seeing if it would crash leveling Monti and maxing out the amount of spawnable AI and using mortars having them go to town on each other fighting. So you can use that for reference to gauge whether your hardware can handle running the server.
+Theoretically this will work in Docker however you will need to go in and combine both yamls and change all the volumes and networking to what you need them to be for a dockerized setup. The server that I'm running the reforger server on has 2 CPUs in it with 10 cores each that run at 3.0ghz and I have 256gb of RAM and the server never ran over 15% CPU and 5.5gb of RAM usage on vanilla reforger. While it was running my friends and I were spawning everything and anything to stress test it seeing if it would crash leveling Monti and maxing out the amount of spawnable AI and using mortars having them go to town on each other fighting. So you can use that for reference to gauge whether your hardware can handle running the server.
 
 **Useful kubectl commands** 
 
