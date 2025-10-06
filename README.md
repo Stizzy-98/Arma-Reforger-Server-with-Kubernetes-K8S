@@ -1,4 +1,4 @@
-# Arma-Reforger-Server-with-Kubernetes-K8S-
+# Arma-Reforger-Server-with-Kubernetes-K8S
 
 Here is my repo for running an Arma Reforger server within Kubernetes! I made this over a weekend after reading that Bohemia had Docker containers that could run the servers. 
 
