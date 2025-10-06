@@ -1,0 +1,142 @@
+# ---------- Server Config (server.json) ----------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: reforger-config
+  namespace: reforger
+data:
+  server.json: |
+    {
+      "publicAddress": "YOUR PUBLIC IP",
+      "publicPort": 2001,
+      "a2s": { "address": "0.0.0.0", "port": 17777 },
+      "game": {
+        "name": "YOUR SERVER NAME",
+        "password": "",
+        "passwordAdmin": "changeme",
+        "admins": [],
+        "scenarioId": "{59AD59368755F41A}Missions/21_GM_Eden.conf",
+        "maxPlayers": 128,
+        "visible": true,
+        "gameProperties": {
+          "battlEye": true,
+          "fastValidation": true
+        },
+        "mods": []
+      }
+    }
+
+---
+# ---------- Container Deployment ----------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arma-reforger
+  namespace: reforger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: arma-reforger
+  template:
+    metadata:
+      labels:
+        app: arma-reforger
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: HOSTNAME
+
+      # Bind directly to the node's network so your router forwards reach the process
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+
+      initContainers:
+        # One-time install/patch of Arma Reforger into persistent /arma
+        - name: install-arma
+          image: cm2network/steamcmd:latest
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh","-lc"]
+          args:
+            - |
+              set -eux
+              mkdir -p /arma
+              if [ ! -x /arma/ArmaReforgerServer ]; then
+                /home/steam/steamcmd/steamcmd.sh \
+                  +@sSteamCmdForcePlatformType linux \
+                  +force_install_dir /arma \
+                  +login anonymous \
+                  +app_update 1874900 validate \
+                  +quit
+                chmod -R 0777 /arma
+              else
+                echo "Arma already installed, skipping app_update."
+              fi
+          volumeMounts:
+            - name: gamefiles
+              mountPath: /arma
+
+      containers:
+        - name: reforger
+          image: ghcr.io/acemod/arma-reforger:latest
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh","-lc"]
+          args:
+            - |
+              set -eux
+              cd /arma
+              exec ./ArmaReforgerServer \
+                -config /reforger/Configs/server.json \
+                -backendlog -nothrow \
+                -profile /home/profile \
+                -addonDownloadDir /reforger/workshop \
+                -addonsDir /reforger/workshop \
+                -maxFPS 60
+          ports:
+            - name: game
+              containerPort: 2001
+              protocol: UDP
+            - name: a2s
+              containerPort: 17777
+              protocol: UDP
+          env:
+            - name: SERVER_PUBLIC_ADDRESS
+              value: "YOUR PUBLIC IP"
+            - name: GAME_NAME
+              value: "YOUR SERVER NAME"
+            - name: ARMA_CONFIG
+              value: "server.json"
+          securityContext:
+            runAsUser: 0
+            runAsNonRoot: false
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+          volumeMounts:
+            - name: cfg
+              mountPath: /reforger/Configs
+              readOnly: true
+            - name: profile
+              mountPath: /home/profile
+            - name: workshop
+              mountPath: /reforger/workshop
+            - name: gamefiles
+              mountPath: /arma
+
+      volumes:
+        - name: cfg
+          configMap:
+            name: reforger-config
+            items:
+              - key: server.json
+                path: server.json
+        - name: profile
+          persistentVolumeClaim:
+            claimName: reforger-profile
+        - name: workshop
+          persistentVolumeClaim:
+            claimName: reforger-workshop
+        - name: gamefiles
+          persistentVolumeClaim:
+            claimName: reforger-gamefiles
