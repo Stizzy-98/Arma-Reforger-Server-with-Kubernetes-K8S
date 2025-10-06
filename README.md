@@ -2,7 +2,7 @@
 
 Here is my repo for running an Arma Reforger server within Kubernetes! I made this over a weekend after reading that Bohemia had Docker containers that could run the servers. 
 
-Within my homelab I am running a Talos OS cluster https://www.talos.dev/ running Kubernetes (K8S) and Calico for networking to host multiple applications among them an Arma Reforger server ran fully in Kubernetes. The storage backplane on my server is being run with Longhorn https://longhorn.io/ also hosted with Kubernetes and deployed using Helm. All files posted are free of use and encouraged to be used to learn Kubernetes and host an Arma Reforger server yourself!
+Within my homelab I am running a Talos OS cluster https://www.talos.dev/ running Kubernetes (K8S) and Calico for networking to host multiple applications among them an Arma Reforger server ran fully in Kubernetes. The storage backplane on my server is being run with Longhorn https://longhorn.io/ (my raid card is set to IT mode to expose all drives) also hosted with Kubernetes and deployed using Helm. All files posted are free of use and encouraged to be used to learn Kubernetes and host an Arma Reforger server yourself!
 
 **Break Down**
 
