@@ -12,7 +12,7 @@ Reforger-storage.yaml is for setting up the storage plane so that it persists be
 
 **Docker Compose** 
 
-Theoretically this will work in Docker however you will need to go in and change all the volumes to what you want them to be. 
+Theoretically this will work in Docker however you will need to go in and combine both yamls and change all the volumes and networking to what you need them to be for a dockerized setup.
 
 **Networking**
 
