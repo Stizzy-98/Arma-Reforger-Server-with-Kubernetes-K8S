@@ -4,8 +4,6 @@ Here is my repo for running an Arma Reforger server within Kubernetes! I made th
 
 Within my homelab I am running a Talos OS cluster https://www.talos.dev/ running Kubernetes (K8S) and Calico for networking to host multiple applications among them an Arma Reforger server ran fully in Kubernetes. The storage backplane on my server is being run with Longhorn https://longhorn.io/ also hosted with Kubernetes. All files posted are free of use and encouraged to be used to learn Kubernetes and host an Arma Reforger server yourself!
 
-I would keep the namespace set at reforger just for easy reference but you can do whatever of course.
-
 **Break Down**
 
 Reforger-storage.yaml is for setting up the storage plane so that it persists between deleting and redeploying the server. Keep in mind it was set up with longhorn so you will have to make changes if you use something else like Rook-CEPH. The reforger-server.yaml is for deploying the actual server itself. When you make a copy of the files go in and edit in your configurations for things such as IP and server preference for name and player count. The sniffer.yaml is for troubleshooting networking when you get the server up. When I was troubleshooting NAT issues it was very helpful in seeing connections coming in to verify that anything was happening. Another file the modded file is an example of how the mods need to be formatted in the yaml. You can look for all the components for each mod by going to https://reforger.armaplatform.com/workshop. Alternatively if you have a server that you like to play on go to it in Reforger and look at the mod list using the puzzle piece in the top right of the screen and you will be able to see the json for the mods that the server uses and you can copy them from there. 
