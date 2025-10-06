@@ -8,7 +8,7 @@ I would keep the namespace set at reforger just for easy reference but you can d
 
 **Break Down**
 
-Reforger-storage.yaml is for setting up the storage plane so that it persists between deleting and redeploying the server. The reforger-server.yaml is for deploying the actual server itself. When you make a copy of the files go in and edit in your configurations for things such as IP and server preference for name and player count. The sniffer.yaml is for troubleshooting networking when you get the server up. When I was troubleshooting NAT issues it was very helpful in seeing connections coming in to verify that anything was happening. 
+Reforger-storage.yaml is for setting up the storage plane so that it persists between deleting and redeploying the server. Keep in mind it was set up with longhorn so you will have to make changes if you use something else like Rook-CEPH. The reforger-server.yaml is for deploying the actual server itself. When you make a copy of the files go in and edit in your configurations for things such as IP and server preference for name and player count. The sniffer.yaml is for troubleshooting networking when you get the server up. When I was troubleshooting NAT issues it was very helpful in seeing connections coming in to verify that anything was happening. 
 
 **Docker Compose** 
 
