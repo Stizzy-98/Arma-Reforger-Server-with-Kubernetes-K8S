@@ -16,7 +16,7 @@ Theoretically this will work in Docker however you will need to go in and change
 
 **Networking**
 
-You will need to port forward port 2001 and 17777 and set up NAT in your router. I used Pure NAT in my PFSense router for example set the NAT rules and then set the actual interface rules on WAN allowing the traffic to the WAN and the actual IP of the server. 
+You will need to port forward port 2001 and 17777 both for UDP and set up NAT in your router. I used Pure NAT in my PFSense router for example set the NAT rules and then set the actual interface rules on WAN allowing the traffic to the WAN and the actual IP of the server. 
 
 **Useful kubectl commands** 
 
