@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: reforger-toolbox
+  namespace: reforger
+  labels:
+    app: reforger-toolbox
+spec:
+  # Schedule on the same node as your server so the RWO PVCs can attach safely and be able to do read and write
+  nodeSelector:
+    kubernetes.io/hostname: YOURHOSTNAME
+
+  containers:
+    - name: toolbox
+      image: busybox:1.36
+      command: ["/bin/sh","-lc","sleep infinity"]
+      securityContext:
+        runAsUser: 0
+        runAsNonRoot: false
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+        seccompProfile:
+          type: RuntimeDefault
+      volumeMounts:                      # change these paths if you named them differently
+        - name: profile 
+          mountPath: /mnt/profile        # corresponds to /home/profile in the server
+        - name: workshop
+          mountPath: /mnt/workshop       # corresponds to /reforger/workshop
+        - name: gamefiles
+          mountPath: /mnt/gamefiles      # corresponds to /arma
+        - name: steamcmd
+          mountPath: /mnt/steamcmd       # if you keep/need this PVC
+
+  volumes:
+    - name: profile
+      persistentVolumeClaim:
+        claimName: reforger-profile
+    - name: workshop
+      persistentVolumeClaim:
+        claimName: reforger-workshop
+    - name: gamefiles
+      persistentVolumeClaim:
+        claimName: reforger-gamefiles
+    - name: steamcmd
+      persistentVolumeClaim:
+        claimName: reforger-steamcmd
