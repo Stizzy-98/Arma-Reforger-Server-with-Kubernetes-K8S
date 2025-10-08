@@ -14,6 +14,8 @@ The sniffer.yaml is for troubleshooting networking when you get the server up. W
 
 If there are networking issues just assume it is NAT. So long as the server is visible in browser and it doesnt crash when you try and connect to it then it is NAT not the server itself have a buddy try and join outside the network to confirm or hop on a seperate network aside from the router you use to troubleshoot further and confirm. In my own experience when I got the server running it would be visible in the Reforger browser but it was not joinable from my end because NAT wasn't properly configured and my connection would just loop trying to connect so keep that in mind if you have this issue yourself.
 
+The reforger-toolbox.yaml is for editing the data within your volumes for the server. So if you wanted to go and configure your server conf to change the welcome message when the server loads for example. Run kubectl -n reforger exec -it reforger-toolbox -- sh to load into the container and make changes to files. The only editor that will be in the container will be vi unless you go and add nano to it. 
+
 Also to login as admin in the server go to the chat and type #login YOURPASSWORD to get into the admin panel and hold Y down and youll see the game master icon come up and load you in if you are using missions for game master youll be able to spawn whatever but if you are in a mission that isnt designed for game master you may not be able to spawn things like AI and vehicles it depends on how the mission is set up. 
 
 **Docker Compose** 
